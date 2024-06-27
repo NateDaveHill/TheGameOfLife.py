@@ -16,6 +16,7 @@ def setup():
                      bg='white')
     
     start_button = Button(root, text='Start', width=12)
+    start_button.bind('<Button-1>', start_handler)
     clear_button = Button(root, text='Clear', width=12)
 
     choice = StringVar(root)
@@ -29,6 +30,36 @@ def setup():
     clear_button.grid(row=1, column=2, sticky=E, padx=20, pady=20)
 
 
+def start_handler(event):
+    print("Yup, you clicked on the start button alright.")
+
+def update():
+    global grid_view
+
+    grid_view.delete(ALL)
+    DataModel.next_gen()
+
+    for i in range(0, DataModel.height):
+        for j in range(0, DataModel.width):
+            if DataModel.grid_model[i][j] == 1:
+                draw_cell(i, j, 'black')
+
+def draw_cell(row, col, color):
+    global grid_view, cell_size
+
+    if color == 'black':
+        outline = 'grey'
+    else:
+        outline = 'white'
+
+    grid_view.create_rectangle(row*cell_size,
+                               col*cell_size,
+                               row*cell_size+cell_size,
+                               col*cell_size+cell_size,
+                               fill=color, outline=outline)
+
+
 if __name__ == '__main__':
     setup()
+    update() 
     mainloop()
