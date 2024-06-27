@@ -2,6 +2,7 @@ from tkinter import *
 import DataModel
 
 cell_size = 5
+is_running = False
 
 def setup():
     global root, grid_view, cell_size, start_button, clear_button, choice
@@ -31,10 +32,19 @@ def setup():
 
 
 def start_handler(event):
-    print("Yup, you clicked on the start button alright.")
+    global is_running, start_button
+
+    if is_running:
+        is_running = False
+        start_button.configure(text='Start')
+    else:
+        is_running = True
+        start_button.configure(text='Pause')
+        update()
+
 
 def update():
-    global grid_view
+    global grid_view, root, is_running
 
     grid_view.delete(ALL)
     DataModel.next_gen()
@@ -43,6 +53,10 @@ def update():
         for j in range(0, DataModel.width):
             if DataModel.grid_model[i][j] == 1:
                 draw_cell(i, j, 'black')
+    
+    if(is_running):
+        root.after(100, update)
+
 
 def draw_cell(row, col, color):
     global grid_view, cell_size
