@@ -23,7 +23,13 @@ def setup():
 
     choice = StringVar(root)
     choice.set('Choose a Pattern')
-    option = OptionMenu(root, choice, 'Choose a Pattern', 'glider', 'glider gun', 'random', command=option_handler)
+    option = OptionMenu(root, choice, 'Choose a Pattern', 
+                        'glider', 
+                        'glider gun', 
+                        'random', 
+                        'beautiful', 
+                        'oscillator', 
+                        command=option_handler)
     option.config(width=20)
 
     grid_view.grid(row=0, columnspan=3, padx=20, pady=20)
@@ -45,6 +51,10 @@ def option_handler(event):
         DataModel.load_pattern(DataModel.glider_pattern, 10, 10)
     elif selection == 'glider gun':
         DataModel.load_pattern(DataModel.glider_gun_pattern, 10, 10)
+    elif selection == 'beautiful':
+        DataModel.load_pattern(DataModel.beautiful_pattern, 10, 10)
+    elif selection == 'oscillator':
+        DataModel.load_pattern(DataModel.oscillator_pattern, 10, 10)
     elif selection == 'random':
         DataModel.randomize(DataModel.grid_model, DataModel.width, DataModel.height)
 
