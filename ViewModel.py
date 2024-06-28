@@ -19,6 +19,7 @@ def setup():
     start_button = Button(root, text='Start', width=12)
     start_button.bind('<Button-1>', start_handler)
     clear_button = Button(root, text='Clear', width=12)
+    clear_button.bind('<Button-1>', clear_handler)
 
     choice = StringVar(root)
     choice.set('Choose a Pattern')
@@ -41,6 +42,16 @@ def start_handler(event):
         is_running = True
         start_button.configure(text='Pause')
         update()
+
+
+def clear_handler(event):
+    global is_running, start_button
+
+    is_running = False
+
+    for i in range(0, DataModel.height):
+        for j in range(0, DataModel.width):
+            draw_cell(i, j, 'white')
 
 
 def update():
