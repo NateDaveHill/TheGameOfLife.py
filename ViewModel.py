@@ -23,13 +23,46 @@ def setup():
 
     choice = StringVar(root)
     choice.set('Choose a Pattern')
-    option = OptionMenu(root, choice, 'Choose a Pattern', 'glider', 'glider gun', 'random')
+    option = OptionMenu(root, choice, 'Choose a Pattern', 'glider', 'glider gun', 'random', command=option_handler)
     option.config(width=20)
 
     grid_view.grid(row=0, columnspan=3, padx=20, pady=20)
     start_button.grid(row=1, column=0, sticky=W, padx=20, pady=20)
     option.grid(row=1, column=1, padx=20)
     clear_button.grid(row=1, column=2, sticky=E, padx=20, pady=20)
+
+    grid_view.bind('<Button-1>', grid_handler)
+
+def option_handler(event):
+    global is_running, start_button, choice
+
+    is_running = False
+    start_button.configure(text='Start')
+
+    selection = choice.get()
+
+    if selection == 'glider':
+        DataModel.load_pattern(DataModel.glider_pattern, 10, 10)
+    elif selection == 'glider gun':
+        DataModel.load_pattern(DataModel.glider_gun_pattern, 10, 10)
+    elif selection == 'random':
+        DataModel.randomize(DataModel.grid_model, DataModel.width, DataModel.height)
+
+    update()
+
+
+def grid_handler(event):
+    global grid_view, cell_size
+
+    x = int(event.x / cell_size)
+    y = int(event.y / cell_size)
+
+    if (DataModel.grid_model[x][y] == 1):
+        DataModel.grid_model[x][y] = 0
+        draw_cell(x, y, 'white')
+    else:
+        DataModel.grid_model[x][y] = 1
+        draw_cell(x, y, 'black')
 
 
 def start_handler(event):
